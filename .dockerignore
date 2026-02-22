@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Git
+.git
+.gitignore
+
+# Docker (don't recursively copy itself)
+docker-compose.yml
+Dockerfile
+
+# Docs & config (not needed in container)
+DEPLOYMENT-PLAN.md
+render.yaml
+*.md
+
+# Dev dependencies
+node_modules
+.env
+.env.*
+
+# Empty folder
+images/

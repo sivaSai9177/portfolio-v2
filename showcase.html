@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Study — Cybersecurity Management Platform | Sirigiri Siva Sai</title>
+  <meta name="description" content="Deep dive into the enterprise-grade cybersecurity management platform built by Sirigiri Siva Sai — architecture, features, and technical decisions.">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/showcase.css">
+</head>
+<body>
+
+  <!-- Three.js 3D Background -->
+  <div id="threeBg"></div>
+
+  <!-- Floating gradient orbs -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ========== NAV ========== -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-back">
+      <span class="material-icons-round">arrow_back</span>
+      <span>Portfolio</span>
+    </a>
+    <span class="nav-project-name">Case Study</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <span class="material-icons-round theme-toggle-icon" id="themeIcon">light_mode</span>
+    </button>
+    <a href="index.html#contact" class="nav-link nav-link--cta">Let's Talk</a>
+  </nav>
+
+  <!-- Theme bubble transition overlay -->
+  <div class="theme-bubble" id="themeBubble"></div>
+
+
+  <!-- ========== HERO ========== -->
+  <section class="sc-hero" id="sc-hero" data-section="dark">
+    <div class="sc-hero-content">
+      <span class="sc-hero-label">Featured Project &middot; Production</span>
+      <h1 class="sc-hero-title reveal-heading">Cybersecurity Management Platform</h1>
+      <p class="sc-hero-sub">Enterprise-grade network security dashboard with real-time analytics, device management, and threat intelligence.</p>
+      <div class="sc-hero-actions">
+        <a href="#" class="sc-btn sc-btn--primary">
+          <span class="material-icons-round">visibility</span> Live Preview
+        </a>
+        <a href="#" class="sc-btn sc-btn--ghost">
+          <span class="material-icons-round">code</span> Source Code
+        </a>
+      </div>
+      <div class="sc-hero-meta">
+        <div class="sc-meta-item">
+          <span class="sc-meta-value">9</span>
+          <span class="sc-meta-label">Months</span>
+        </div>
+        <div class="sc-meta-item">
+          <span class="sc-meta-value">90+</span>
+          <span class="sc-meta-label">Components</span>
+        </div>
+        <div class="sc-meta-item">
+          <span class="sc-meta-value">60+</span>
+          <span class="sc-meta-label">Routes</span>
+        </div>
+        <div class="sc-meta-item">
+          <span class="sc-meta-value">2</span>
+          <span class="sc-meta-label">Companies</span>
+        </div>
+      </div>
+    </div>
+    <div class="sc-hero-mockup">
+      <img src="assets/dummy/hero-mockup.svg" alt="Dashboard overview mockup" class="sc-mockup-img">
+    </div>
+  </section>
+
+
+  <!-- ========== OVERVIEW ========== -->
+  <section class="sc-overview" id="sc-overview" data-section="dark">
+    <div class="sc-section-inner">
+      <div class="sc-section-label">
+        <span class="material-icons-round">lightbulb</span>
+        <span class="reveal-heading">The Story</span>
+      </div>
+
+      <div class="sc-overview-grid">
+        <div class="sc-overview-card sc-overview-card--problem">
+          <div class="sc-overview-icon">
+            <span class="material-icons-round">report_problem</span>
+          </div>
+          <h3 class="sc-overview-title">The Problem</h3>
+          <p class="sc-overview-text">
+            The existing cybersecurity platform had grown organically — imperative patterns everywhere, useEffect-driven API calls causing race conditions, prop drilling across nested components, and a monolithic bundle that took seconds to load. The frontend was functional but architecturally fragile.
+          </p>
+          <ul class="sc-overview-list">
+            <li>Race conditions from unmanaged async calls</li>
+            <li>No centralized state — scattered sessionStorage</li>
+            <li>Monolithic bundle — no code splitting</li>
+            <li>No shared component library</li>
+          </ul>
+        </div>
+
+        <div class="sc-overview-card sc-overview-card--solution">
+          <div class="sc-overview-icon">
+            <span class="material-icons-round">auto_fix_high</span>
+          </div>
+          <h3 class="sc-overview-title">The Solution</h3>
+          <p class="sc-overview-text">
+            I took ownership of a complete architectural overhaul — migrating to modern React patterns, introducing server-state management, centralizing client state, implementing code splitting, and building a reusable component library that the entire team now ships features on.
+          </p>
+          <ul class="sc-overview-list">
+            <li>TanStack Query for server-state caching</li>
+            <li>Zustand stores replacing prop drilling</li>
+            <li>React.lazy across 60+ routes</li>
+            <li>Shared component library (90+ components)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== FEATURES ========== -->
+  <section class="sc-features" id="sc-features" data-section="dark">
+    <div class="sc-section-inner">
+      <div class="sc-section-label">
+        <span class="material-icons-round">dashboard</span>
+        <span class="reveal-heading">Key Features</span>
+      </div>
+
+      <div class="sc-features-grid">
+        <div class="sc-feature-card">
+          <div class="sc-feature-number">01</div>
+          <div class="sc-feature-img">
+            <img src="assets/dummy/feature-1.svg" alt="Dynamic data grids with server-side operations">
+          </div>
+          <div class="sc-feature-body">
+            <h3 class="sc-feature-title">Dynamic Data Grids</h3>
+            <p class="sc-feature-desc">
+              Built MUI X Data Grid interfaces with server-side sorting, filtering, pagination, and inline row actions. Handles thousands of records with virtualized rendering and custom cell renderers.
+            </p>
+            <div class="sc-feature-tags">
+              <span>MUI X Data Grid</span>
+              <span>Server-side Ops</span>
+              <span>Virtualization</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sc-feature-card">
+          <div class="sc-feature-number">02</div>
+          <div class="sc-feature-img">
+            <img src="assets/dummy/feature-2.svg" alt="Composable chart system with multiple chart types">
+          </div>
+          <div class="sc-feature-body">
+            <h3 class="sc-feature-title">Composable Chart System</h3>
+            <p class="sc-feature-desc">
+              Engineered a reusable charting system with Recharts — area, bar, stacked area, and line charts with consistent theming, responsive sizing, and real-time data streaming via WebSocket.
+            </p>
+            <div class="sc-feature-tags">
+              <span>Recharts</span>
+              <span>Real-time Data</span>
+              <span>WebSocket</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sc-feature-card">
+          <div class="sc-feature-number">03</div>
+          <div class="sc-feature-img">
+            <img src="assets/dummy/feature-3.svg" alt="Configuration management with forms and validation">
+          </div>
+          <div class="sc-feature-body">
+            <h3 class="sc-feature-title">Configuration Management</h3>
+            <p class="sc-feature-desc">
+              Owned 20+ configuration pages end-to-end — firewall policies, rate limiting, subscriber management, and network settings. Built with Zod validation, dynamic forms, and optimistic updates.
+            </p>
+            <div class="sc-feature-tags">
+              <span>Zod Validation</span>
+              <span>Dynamic Forms</span>
+              <span>20+ Pages</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== TECH STACK ========== -->
+  <section class="sc-tech" id="sc-tech" data-section="dark">
+    <div class="sc-section-inner">
+      <div class="sc-section-label">
+        <span class="material-icons-round">memory</span>
+        <span class="reveal-heading">Architecture</span>
+      </div>
+
+      <div class="sc-tech-diagram">
+        <img src="assets/dummy/tech-diagram.svg" alt="System architecture diagram showing frontend, state, and backend layers">
+      </div>
+
+      <div class="sc-tech-grid">
+        <div class="sc-tech-group">
+          <h4 class="sc-tech-group-title">Frontend Core</h4>
+          <div class="sc-tech-pills">
+            <span class="pill pill--hl">React 19</span>
+            <span class="pill pill--hl">TypeScript</span>
+            <span class="pill">Vite</span>
+          </div>
+        </div>
+        <div class="sc-tech-group">
+          <h4 class="sc-tech-group-title">UI Framework</h4>
+          <div class="sc-tech-pills">
+            <span class="pill pill--hl">MUI v7</span>
+            <span class="pill">MUI X Data Grid</span>
+            <span class="pill">MUI X Charts</span>
+          </div>
+        </div>
+        <div class="sc-tech-group">
+          <h4 class="sc-tech-group-title">State & Data</h4>
+          <div class="sc-tech-pills">
+            <span class="pill pill--hl">TanStack Query</span>
+            <span class="pill pill--hl">Zustand</span>
+            <span class="pill">Axios</span>
+            <span class="pill">Socket.io</span>
+          </div>
+        </div>
+        <div class="sc-tech-group">
+          <h4 class="sc-tech-group-title">Visualization</h4>
+          <div class="sc-tech-pills">
+            <span class="pill pill--hl">Recharts</span>
+            <span class="pill">D3.js</span>
+            <span class="pill">amCharts 5</span>
+          </div>
+        </div>
+        <div class="sc-tech-group">
+          <h4 class="sc-tech-group-title">Quality & DX</h4>
+          <div class="sc-tech-pills">
+            <span class="pill">Zod</span>
+            <span class="pill">ESLint</span>
+            <span class="pill">Vitest</span>
+            <span class="pill">Git</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== GALLERY ========== -->
+  <section class="sc-gallery" id="sc-gallery" data-section="dark">
+    <div class="sc-section-inner">
+      <div class="sc-section-label">
+        <span class="material-icons-round">photo_library</span>
+        <span class="reveal-heading">Screenshots</span>
+      </div>
+
+      <div class="sc-gallery-grid">
+        <div class="sc-gallery-item sc-gallery-item--wide">
+          <img src="assets/project-dashboard-1.png" alt="Network Performance Dashboard — metrics and area charts">
+        </div>
+        <div class="sc-gallery-item sc-gallery-item--wide">
+          <img src="assets/project-dashboard-2.png" alt="Dashboard — bar charts, donut chart, device groups">
+        </div>
+        <div class="sc-gallery-item sc-gallery-item--wide">
+          <img src="assets/project-devices.png" alt="Device Management — card grid view with device IDs, IP addresses, and processing status">
+        </div>
+        <div class="sc-gallery-item sc-gallery-item--wide">
+          <img src="assets/project-url-upload.png" alt="URL/IP File Upload — IPv4 threat intelligence files with categories and bulk actions">
+        </div>
+        <div class="sc-gallery-item sc-gallery-item--wide">
+          <img src="assets/project-plan-policy.png" alt="Plan Policy — quota limits, upload/download speeds, and device assignments">
+        </div>
+        <div class="sc-gallery-item sc-gallery-item--wide">
+          <img src="assets/project-app-groups.png" alt="App Group Policies — allow and deny lists for application access control">
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== CTA ========== -->
+  <section class="sc-cta" id="sc-cta">
+    <div class="sc-cta-inner">
+      <h2 class="sc-cta-heading reveal-heading">Interested in working together?</h2>
+      <p class="sc-cta-sub">I'm open to frontend roles, freelance projects, and collaborations.</p>
+      <div class="sc-cta-actions">
+        <a href="index.html#contact" class="sc-btn sc-btn--primary">
+          <span class="material-icons-round">email</span> Get in Touch
+        </a>
+        <a href="index.html" class="sc-btn sc-btn--ghost">
+          <span class="material-icons-round">arrow_back</span> Back to Portfolio
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <p>Designed & Built by <strong>Sirigiri Siva Sai</strong> &middot; 2025</p>
+  </footer>
+
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <script src="js/showcase.js"></script>
+
+</body>
+</html>
