@@ -481,7 +481,6 @@ function initProjects() {
 // ===== CONTACT ANIMATIONS =====
 function initContact() {
   // Set initial hidden states via GSAP (not CSS) so theme repaints don't reset them
-  gsap.set('.contact-card', { opacity: 0, y: 20 });
   gsap.set('.social-btn', { opacity: 0, y: 20 });
 
   // Section label char reveal
@@ -550,17 +549,6 @@ function initContact() {
     });
   }
 
-  // Contact cards — stagger in
-  gsap.to('.contact-card', {
-    opacity: 1, y: 0,
-    duration: 0.5, stagger: 0.1, ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.contact-details',
-      start: 'top 80%',
-      toggleActions: 'play none none reverse',
-    },
-  });
-
   // Social buttons — spring stagger
   gsap.to('.social-btn', {
     opacity: 1, y: 0,
@@ -570,6 +558,230 @@ function initContact() {
       start: 'top 85%',
       toggleActions: 'play none none reverse',
     },
+  });
+}
+
+
+// ===== EMAIL DROP FORM =====
+function initEmailForm() {
+  const form = document.getElementById('emailForm');
+  const sendBtn = document.getElementById('emailSendBtn');
+  const toast = document.getElementById('emailToast');
+  const messageField = document.getElementById('efMessage');
+  const charCount = document.getElementById('charCount');
+  const particles = document.getElementById('emailParticles');
+
+  if (!form) return;
+
+  // ── EmailJS init ──
+  emailjs.init('Zew0s6qv4Z3RrmSlt');
+
+  // ── Scroll-triggered form fields stagger-in ──
+  gsap.set('[data-field]', { opacity: 0, y: 25 });
+  gsap.set('.email-form-header', { opacity: 0, y: 15 });
+  gsap.set('.email-send-btn', { opacity: 0, y: 20 });
+  gsap.set('.contact-info-row .contact-card', { opacity: 0, y: 20 });
+
+  gsap.to('.email-form-header', {
+    opacity: 1, y: 0,
+    duration: 0.5, ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.email-form',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+    },
+  });
+
+  gsap.to('[data-field]', {
+    opacity: 1, y: 0,
+    duration: 0.6, stagger: 0.1, ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.email-form',
+      start: 'top 75%',
+      toggleActions: 'play none none reverse',
+    },
+  });
+
+  gsap.to('.email-send-btn', {
+    opacity: 1, y: 0,
+    duration: 0.5, ease: 'back.out(2)',
+    scrollTrigger: {
+      trigger: '.email-form',
+      start: 'top 65%',
+      toggleActions: 'play none none reverse',
+    },
+  });
+
+  gsap.to('.contact-info-row .contact-card', {
+    opacity: 1, y: 0,
+    duration: 0.5, stagger: 0.08, ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.contact-info-row',
+      start: 'top 85%',
+      toggleActions: 'play none none reverse',
+    },
+  });
+
+  // ── Character counter with color warning ──
+  if (messageField && charCount) {
+    messageField.setAttribute('maxlength', '500');
+    messageField.addEventListener('input', () => {
+      const len = messageField.value.length;
+      charCount.textContent = len;
+      const counter = charCount.parentElement;
+      if (len > 450) {
+        counter.classList.add('warn');
+      } else {
+        counter.classList.remove('warn');
+      }
+    });
+  }
+
+  // ── Magnetic send button (subtle cursor follow) ──
+  sendBtn.addEventListener('mousemove', (e) => {
+    const rect = sendBtn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    gsap.to(sendBtn, {
+      x: x * 0.15,
+      y: y * 0.2,
+      duration: 0.4,
+      ease: 'power2.out',
+    });
+  });
+
+  sendBtn.addEventListener('mouseleave', () => {
+    gsap.to(sendBtn, {
+      x: 0, y: 0,
+      duration: 0.6,
+      ease: 'elastic.out(1, 0.4)',
+    });
+  });
+
+  // ── Particle burst on success ──
+  function burstParticles() {
+    const colors = ['#f5a623', '#e09515', '#ffd700', '#ff8c00', '#2ecc71'];
+    for (let i = 0; i < 14; i++) {
+      const p = document.createElement('div');
+      p.className = 'email-particle';
+      p.style.background = colors[i % colors.length];
+      p.style.width = (4 + Math.random() * 5) + 'px';
+      p.style.height = p.style.width;
+      particles.appendChild(p);
+
+      const angle = (Math.PI * 2 / 14) * i + (Math.random() * 0.5 - 0.25);
+      const dist = 60 + Math.random() * 80;
+      gsap.fromTo(p,
+        { opacity: 1, x: 0, y: 0, scale: 1 },
+        {
+          opacity: 0,
+          x: Math.cos(angle) * dist,
+          y: Math.sin(angle) * dist,
+          scale: 0,
+          duration: 0.8 + Math.random() * 0.4,
+          ease: 'power3.out',
+          onComplete: () => p.remove(),
+        }
+      );
+    }
+  }
+
+  // ── Show toast notification ──
+  function showToast(message, isError) {
+    const toastText = toast.querySelector('.email-toast-text');
+    const toastIcon = toast.querySelector('.email-toast-icon');
+    toastText.textContent = message;
+
+    if (isError) {
+      toast.classList.add('error');
+      toastIcon.textContent = 'error';
+    } else {
+      toast.classList.remove('error');
+      toastIcon.textContent = 'check_circle';
+    }
+
+    gsap.fromTo(toast,
+      { opacity: 0, y: 100 },
+      {
+        opacity: 1, y: 0,
+        duration: 0.6,
+        ease: 'back.out(2)',
+        onStart: () => { toast.style.pointerEvents = 'auto'; },
+      }
+    );
+
+    gsap.to(toast, {
+      opacity: 0, y: 40,
+      delay: 3.5,
+      duration: 0.4,
+      ease: 'power2.in',
+      onComplete: () => { toast.style.pointerEvents = 'none'; },
+    });
+  }
+
+  // ── Form submission ──
+  let cooldown = false;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (cooldown) return;
+
+    const name = document.getElementById('efName').value.trim();
+    const email = document.getElementById('efEmail').value.trim();
+    const message = document.getElementById('efMessage').value.trim();
+
+    if (!name || !email || !message) return;
+
+    // Start sending animation
+    sendBtn.classList.add('sending');
+
+    try {
+      await emailjs.send(
+        'service_9aim4u7',
+        'template_j6zq3nd',
+        {
+          from_name: name,
+          from_email: email,
+          message: message,
+          to_name: 'Siva Sai',
+        }
+      );
+
+      // Success!
+      sendBtn.classList.remove('sending');
+      sendBtn.classList.add('sent');
+
+      // Icon morph to checkmark
+      const btnText = sendBtn.querySelector('.email-send-text');
+      const btnIcon = sendBtn.querySelector('.email-send-icon');
+      btnText.textContent = 'Sent!';
+      btnText.style.display = '';
+      btnIcon.textContent = 'check_circle';
+      btnIcon.style.display = '';
+
+      // Particle burst
+      burstParticles();
+
+      // Toast
+      showToast('Message sent! I\'ll get back to you soon.', false);
+
+      // Reset form after delay
+      setTimeout(() => {
+        form.reset();
+        charCount.textContent = '0';
+        sendBtn.classList.remove('sent');
+        btnText.textContent = 'Send Message';
+        btnIcon.textContent = 'send';
+        cooldown = false;
+      }, 4000);
+
+      cooldown = true;
+
+    } catch (err) {
+      sendBtn.classList.remove('sending');
+      showToast('Failed to send. Try emailing me directly!', true);
+      cooldown = false;
+    }
   });
 }
 
@@ -3884,7 +4096,7 @@ function initThreeBackground() {
   // Scene setup
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 30;
+  camera.position.z = isMobile ? 26 : 30;
 
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -3906,7 +4118,8 @@ function initThreeBackground() {
   scene.add(globePivot);
 
   // Offset globe downward — space below nav, globe in lower portion
-  globePivot.position.y = -5;
+  // On mobile, keep globe more centered in the viewport
+  globePivot.position.y = isMobile ? -2 : -5;
 
   // Generate globe dots via Fibonacci sphere
   const dotPositions = [];
@@ -4694,6 +4907,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initSkills();
   initProjects();
   initContact();
+  initEmailForm();
   initDecorations();
   initActiveNav();
   initMagneticNav();

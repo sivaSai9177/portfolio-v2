@@ -317,12 +317,12 @@
       <div class="project-card project-card--featured">
         <div class="project-card-number">01</div>
         <div class="project-card-img project-card-img--gallery">
-          <img src="assets/project-dashboard-1.png" alt="Network Performance Dashboard — metrics, area charts for inbound/outbound bytes and rate" class="project-screenshot">
-          <img src="assets/project-dashboard-2.png" alt="Network Performance Dashboard — bar charts, donut chart, top device groups table" class="project-screenshot">
-          <img src="assets/project-devices.png" alt="Device Management — card grid view with device IDs, IP addresses, groups, and processing status" class="project-screenshot">
-          <img src="assets/project-url-upload.png" alt="URL/IP File Upload — IPv4 threat intelligence files with categories, device counts, and bulk actions" class="project-screenshot">
-          <img src="assets/project-plan-policy.png" alt="Plan Policy — quota limits, upload/download speeds, device assignments, and plan status management" class="project-screenshot">
-          <img src="assets/project-app-groups.png" alt="App Group Policies — allow and deny lists for application access control across device groups" class="project-screenshot">
+          <img src="assets/work/project-dashboard-1.png" alt="Network Performance Dashboard — metrics, area charts for inbound/outbound bytes and rate" class="project-screenshot">
+          <img src="assets/work/project-dashboard-2.png" alt="Network Performance Dashboard — bar charts, donut chart, top device groups table" class="project-screenshot">
+          <img src="assets/work/project-devices.png" alt="Device Management — card grid view with device IDs, IP addresses, groups, and processing status" class="project-screenshot">
+          <img src="assets/work/project-url-upload.png" alt="URL/IP File Upload — IPv4 threat intelligence files with categories, device counts, and bulk actions" class="project-screenshot">
+          <img src="assets/work/project-plan-policy.png" alt="Plan Policy — quota limits, upload/download speeds, device assignments, and plan status management" class="project-screenshot">
+          <img src="assets/work/project-app-groups.png" alt="App Group Policies — allow and deny lists for application access control across device groups" class="project-screenshot">
         </div>
         <div class="project-card-body">
           <span class="project-label">Featured &middot; Production</span>
@@ -389,6 +389,7 @@
       <div class="contact-intro">
         <div class="contact-accent-bar"></div>
         <div class="contact-intro-body">
+          <img src="https://img.icons8.com/3d-fluency/200/handshake.png" alt="Let's connect" class="contact-greeting-img" />
           <div class="contact-label">
             <span class="material-icons-round">chat_bubble</span>
             <span class="reveal-heading">Get In Touch</span>
@@ -400,9 +401,45 @@
         </div>
       </div>
 
-      <!-- Right: Contact details -->
-      <div class="contact-details">
-        <a href="mailto:sirigirisiva1@gmail.com" class="contact-card contact-card--wide">
+      <!-- Right: Email Drop Form -->
+      <div class="email-form-wrapper">
+        <form class="email-form" id="emailForm" autocomplete="off">
+          <div class="email-form-header">
+            <span class="material-icons-round">mail</span>
+            <span>Drop a Message</span>
+          </div>
+
+          <div class="email-field" data-field>
+            <input type="text" id="efName" class="email-input" required placeholder=" ">
+            <label for="efName" class="email-label">Your Name</label>
+            <div class="email-input-line"></div>
+          </div>
+
+          <div class="email-field" data-field>
+            <input type="email" id="efEmail" class="email-input" required placeholder=" ">
+            <label for="efEmail" class="email-label">Your Email</label>
+            <div class="email-input-line"></div>
+          </div>
+
+          <div class="email-field" data-field>
+            <textarea id="efMessage" class="email-input email-textarea" required placeholder=" " rows="3"></textarea>
+            <label for="efMessage" class="email-label">Message</label>
+            <div class="email-input-line"></div>
+            <span class="email-char-count"><span id="charCount">0</span>/500</span>
+          </div>
+
+          <button type="submit" class="email-send-btn" id="emailSendBtn">
+            <span class="email-send-text">Send Message</span>
+            <span class="material-icons-round email-send-icon">send</span>
+            <span class="email-send-loader"></span>
+            <div class="email-particles" id="emailParticles"></div>
+          </button>
+        </form>
+      </div>
+
+      <!-- Contact info row -->
+      <div class="contact-info-row">
+        <a href="mailto:sirigirisiva1@gmail.com" class="contact-card">
           <span class="contact-card-badge">
             <span class="material-icons-round">email</span>
           </span>
@@ -410,28 +447,31 @@
             <span class="contact-card-label">Email</span>
             <span class="contact-card-value">sirigirisiva1@gmail.com</span>
           </div>
-          <span class="material-icons-round contact-card-arrow">arrow_forward</span>
         </a>
-        <div class="contact-details-row">
-          <a href="tel:+919177777922" class="contact-card">
-            <span class="contact-card-badge">
-              <span class="material-icons-round">phone</span>
-            </span>
-            <div class="contact-card-info">
-              <span class="contact-card-label">Phone</span>
-              <span class="contact-card-value">+91 917 777 7922</span>
-            </div>
-          </a>
-          <div class="contact-card">
-            <span class="contact-card-badge">
-              <span class="material-icons-round">location_on</span>
-            </span>
-            <div class="contact-card-info">
-              <span class="contact-card-label">Location</span>
-              <span class="contact-card-value">Bengaluru, Karnataka</span>
-            </div>
+        <a href="tel:+919177777922" class="contact-card">
+          <span class="contact-card-badge">
+            <span class="material-icons-round">phone</span>
+          </span>
+          <div class="contact-card-info">
+            <span class="contact-card-label">Phone</span>
+            <span class="contact-card-value">+91 917 777 7922</span>
+          </div>
+        </a>
+        <div class="contact-card">
+          <span class="contact-card-badge">
+            <span class="material-icons-round">location_on</span>
+          </span>
+          <div class="contact-card-info">
+            <span class="contact-card-label">Location</span>
+            <span class="contact-card-value">Bengaluru, Karnataka</span>
           </div>
         </div>
+      </div>
+
+      <!-- Email toast notification -->
+      <div class="email-toast" id="emailToast">
+        <span class="material-icons-round email-toast-icon">check_circle</span>
+        <span class="email-toast-text">Message sent successfully!</span>
       </div>
 
       <!-- Bottom: Social row -->
@@ -458,6 +498,7 @@
 
 
   <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>

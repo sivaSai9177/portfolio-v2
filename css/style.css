@@ -138,8 +138,11 @@ html {
 }
 
 body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-family: var(--font-body);
+  background: #0a0a0a;
   background: var(--bg);
+  color: #f0f0f0;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -177,6 +180,7 @@ img {
 /* ===== THREE.JS BACKGROUND ===== */
 #threeBg {
   position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
   inset: 0;
   z-index: 0;
   pointer-events: none;
@@ -191,6 +195,7 @@ img {
 /* ===== FLOATING GRADIENT ORBS ===== */
 .bg-orbs {
   position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
   inset: 0;
   z-index: 0;
   pointer-events: none;
@@ -556,10 +561,13 @@ footer,
 /* Mobile Menu */
 .mobile-menu {
   position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
   inset: 0;
   z-index: 99;
+  background: rgba(10, 10, 10, 0.97);
   background: var(--overlay-bg);
   backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -607,6 +615,7 @@ footer,
 
 .hero-grain {
   position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
   inset: 0;
   opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
@@ -640,6 +649,7 @@ footer,
 
 .hero-name-line {
   display: block;
+  font-size: 72px;
   font-size: clamp(48px, 10vw, 100px);
   overflow: hidden;
 }
@@ -648,6 +658,7 @@ footer,
   display: inline-block;
   opacity: 0;
   transform: translateY(100%);
+  color: #f5a623;
   background: linear-gradient(135deg, var(--text), var(--accent), var(--text));
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -784,6 +795,7 @@ footer,
 
 .journey-heading {
   font-family: var(--font-heading);
+  font-size: 36px;
   font-size: clamp(28px, 4vw, 42px);
   font-weight: 700;
   line-height: 1.2;
@@ -1162,6 +1174,21 @@ footer,
   overflow: hidden;
 }
 
+/* aspect-ratio fallback for older browsers */
+@supports not (aspect-ratio: 16/10) {
+  .project-card-img {
+    padding-bottom: 62.5%; /* 10/16 */
+    height: 0;
+    position: relative;
+  }
+  .project-card-img img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+}
+
 .project-card--featured .project-card-img {
   aspect-ratio: auto;
   min-height: 280px;
@@ -1318,6 +1345,7 @@ footer,
 .contact::before {
   content: '';
   position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
   inset: 0;
   background-image:
     linear-gradient(var(--accent-border) 1px, transparent 1px),
@@ -1383,6 +1411,19 @@ footer,
   text-align: left;
 }
 
+.contact-greeting-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 8px 20px var(--accent-glow));
+  animation: floatBounce 3s ease-in-out infinite;
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
+}
+
 .contact-label {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1403,6 +1444,7 @@ footer,
 
 .contact-heading {
   font-family: var(--font-heading);
+  font-size: 36px;
   font-size: clamp(28px, 4vw, 40px);
   font-weight: 800;
   line-height: 1.25;
@@ -1416,6 +1458,7 @@ footer,
 }
 
 .contact-heading .word-inner {
+  color: #f5a623;
   background: linear-gradient(135deg, var(--text), var(--accent), var(--text));
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -1609,6 +1652,279 @@ footer,
 }
 
 
+/* ===== EMAIL DROP FORM ===== */
+.email-form-wrapper {
+  position: relative;
+}
+
+.email-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius);
+  padding: 28px 28px 24px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.email-form:hover {
+  border-color: var(--accent-border);
+  box-shadow: 0 12px 40px var(--shadow-card);
+}
+
+.email-form-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.email-form-header .material-icons-round {
+  font-size: 16px;
+}
+
+/* Floating label input fields */
+.email-field {
+  position: relative;
+}
+
+.email-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 16px 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  box-sizing: border-box;
+  resize: none;
+}
+
+.email-textarea {
+  min-height: 90px;
+  line-height: 1.6;
+}
+
+.email-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), 0 0 20px var(--accent-glow);
+}
+
+.email-label {
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+}
+
+.email-input:focus ~ .email-label,
+.email-input:not(:placeholder-shown) ~ .email-label {
+  top: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Animated underline */
+.email-input-line {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.email-input:focus ~ .email-input-line {
+  width: 100%;
+  left: 0;
+}
+
+/* Character counter */
+.email-char-count {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  transition: color var(--transition);
+}
+
+.email-char-count.warn {
+  color: #e85d4a;
+}
+
+/* Send button */
+.email-send-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 24px;
+  background: var(--accent-gradient);
+  color: var(--accent-contrast);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.email-send-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--shadow-accent);
+}
+
+.email-send-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.email-send-icon {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.email-send-btn:hover .email-send-icon {
+  transform: translateX(3px) rotate(-20deg);
+}
+
+/* Sending state */
+.email-send-loader {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(10, 10, 10, 0.2);
+  border-top-color: var(--accent-contrast);
+  border-radius: 50%;
+  animation: spinLoader 0.7s linear infinite;
+}
+
+@keyframes spinLoader {
+  to { transform: rotate(360deg); }
+}
+
+.email-send-btn.sending .email-send-text,
+.email-send-btn.sending .email-send-icon {
+  display: none;
+}
+
+.email-send-btn.sending .email-send-loader {
+  display: block;
+}
+
+.email-send-btn.sending {
+  pointer-events: none;
+  opacity: 0.85;
+  animation: sendPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes sendPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--shadow-accent); }
+  50% { box-shadow: 0 0 25px 8px var(--shadow-accent); }
+}
+
+/* Success state */
+.email-send-btn.sent {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  pointer-events: none;
+}
+
+.email-send-btn.sent .email-send-loader {
+  display: none;
+}
+
+/* Particle burst */
+.email-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.email-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+}
+
+/* Toast notification */
+.email-toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--accent-border);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  box-shadow: 0 12px 40px var(--shadow-card), 0 0 30px var(--accent-glow);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.email-toast-icon {
+  color: #2ecc71;
+  font-size: 20px;
+}
+
+.email-toast.error .email-toast-icon {
+  color: #e85d4a;
+}
+
+/* Contact info row (below form) */
+.contact-info-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+
 /* ===== 3D TRANSFORMERS-STYLE BUTTON FLIP ===== */
 .btn-3d {
   perspective: 600px;
@@ -1643,6 +1959,7 @@ footer,
 
 .btn-3d-back {
   position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
   inset: 0;
   transform: rotateX(180deg);
 }
@@ -1838,8 +2155,12 @@ footer,
     font-size: 32px;
   }
 
-  .contact-details-row {
-    grid-template-columns: 1fr 1fr;
+  .contact-info-row {
+    grid-template-columns: 1fr;
+  }
+
+  .email-form {
+    padding: 24px 20px 20px;
   }
 
   .deco {
