@@ -199,12 +199,19 @@ export default function Navbar() {
   }, []);
 
   // -------------------------------------------------------
-  //  DESKTOP: Scroll effect (top nav glass bg)
+  //  DESKTOP: Scroll effect (top nav glass bg + top mask)
   // -------------------------------------------------------
+  const topMaskRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleScroll = () => {
+      const scrolled = window.scrollY > 60;
       if (navRef.current) {
-        navRef.current.classList.toggle('scrolled', window.scrollY > 60);
+        navRef.current.classList.toggle('scrolled', scrolled);
+      }
+      // Show the top mask only after scrolling past the hero area
+      if (topMaskRef.current) {
+        topMaskRef.current.classList.toggle('visible', window.scrollY > 200);
       }
     };
     window.addEventListener('scroll', handleScroll);
@@ -263,8 +270,8 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Gradient mask covering 16px gap above floating nav */}
-      <div className="nav-top-mask" aria-hidden="true" />
+      {/* Gradient mask — covers gap above floating nav, appears on scroll */}
+      <div className="nav-top-mask" ref={topMaskRef} aria-hidden="true" />
 
       {/* ============ DESKTOP TOP NAVBAR ============ */}
       <nav className="nav" id="nav" ref={navRef}>
