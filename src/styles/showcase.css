@@ -491,12 +491,12 @@ img { max-width: 100%; height: auto; }
   font-family: var(--font-heading);
   font-size: 13px;
   font-weight: 700;
-  color: #f0f0f0;
+  color: var(--text);
   margin: 0 0 4px;
 }
 .sc-arch-callout-text {
   font-size: 11px;
-  color: #8b949e;
+  color: var(--text-secondary);
   line-height: 1.5;
   margin: 0;
 }
