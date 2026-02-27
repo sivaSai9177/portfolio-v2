@@ -1,3 +1,16 @@
+# ─── Stage 1: Build ────────────────────────────────────
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Install dependencies first (cache layer)
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# Copy source and build
+COPY . .
+RUN npm run build
+
+# ─── Stage 2: Serve with Nginx ─────────────────────────
 FROM nginx:1.27-alpine
 
 # Remove default nginx config and welcome page
@@ -6,11 +19,8 @@ RUN rm /etc/nginx/conf.d/default.conf /usr/share/nginx/html/*
 # Copy nginx template (uses $PORT for Render compatibility)
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 
-# Copy site files
-COPY index.html showcase.html /usr/share/nginx/html/
-COPY css/ /usr/share/nginx/html/css/
-COPY js/ /usr/share/nginx/html/js/
-COPY assets/ /usr/share/nginx/html/assets/
+# Copy built assets from builder stage
+COPY --from=builder /app/dist/ /usr/share/nginx/html/
 
 # Default port — Render overrides this via $PORT env var
 ENV PORT=80

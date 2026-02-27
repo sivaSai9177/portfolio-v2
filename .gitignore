@@ -3,3 +3,5 @@
 *.log
 .env
 node_modules/
+dist/
+config_ui-I301 
