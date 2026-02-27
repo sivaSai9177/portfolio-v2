@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" fill="none">
+  <!-- Chart System Feature -->
+  <rect width="600" height="400" rx="12" fill="#111"/>
+  <rect x="1" y="1" width="598" height="398" rx="11" stroke="#222" stroke-width="1"/>
+  <!-- Header -->
+  <rect x="20" y="20" width="160" height="14" rx="3" fill="#f5a623" opacity="0.4"/>
+  <rect x="20" y="42" width="220" height="8" rx="2" fill="#555"/>
+  <!-- Area chart -->
+  <rect x="20" y="68" width="370" height="200" rx="8" fill="#161616" stroke="#222" stroke-width="1"/>
+  <rect x="36" y="82" width="90" height="10" rx="2" fill="#555"/>
+  <!-- Grid lines -->
+  <line x1="36" y1="120" x2="374" y2="120" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="36" y1="150" x2="374" y2="150" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="36" y1="180" x2="374" y2="180" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="36" y1="210" x2="374" y2="210" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="36" y1="240" x2="374" y2="240" stroke="#1a1a1a" stroke-width="1"/>
+  <!-- Area fill -->
+  <path d="M50,240 L90,220 L130,225 L170,195 L210,180 L250,190 L290,160 L330,145 L360,155 L360,250 L50,250Z" fill="#f5a623" opacity="0.08"/>
+  <polyline points="50,240 90,220 130,225 170,195 210,180 250,190 290,160 330,145 360,155" stroke="#f5a623" stroke-width="2" fill="none" opacity="0.6"/>
+  <!-- Second area -->
+  <path d="M50,250 L90,235 L130,240 L170,215 L210,205 L250,210 L290,185 L330,175 L360,180 L360,250 L50,250Z" fill="#f5a623" opacity="0.04"/>
+  <polyline points="50,250 90,235 130,240 170,215 210,205 250,210 290,185 330,175 360,180" stroke="#f5a623" stroke-width="1.5" fill="none" opacity="0.3"/>
+  <!-- Stacked bar chart -->
+  <rect x="400" y="68" width="180" height="200" rx="8" fill="#161616" stroke="#222" stroke-width="1"/>
+  <rect x="416" y="82" width="80" height="10" rx="2" fill="#555"/>
+  <rect x="420" y="220" width="24" height="30" rx="2" fill="#f5a623" opacity="0.5"/>
+  <rect x="420" y="190" width="24" height="30" rx="2" fill="#f5a623" opacity="0.25"/>
+  <rect x="454" y="200" width="24" height="50" rx="2" fill="#f5a623" opacity="0.5"/>
+  <rect x="454" y="165" width="24" height="35" rx="2" fill="#f5a623" opacity="0.25"/>
+  <rect x="488" y="210" width="24" height="40" rx="2" fill="#f5a623" opacity="0.5"/>
+  <rect x="488" y="180" width="24" height="30" rx="2" fill="#f5a623" opacity="0.25"/>
+  <rect x="522" y="185" width="24" height="65" rx="2" fill="#f5a623" opacity="0.5"/>
+  <rect x="522" y="150" width="24" height="35" rx="2" fill="#f5a623" opacity="0.25"/>
+  <rect x="556" y="195" width="18" height="55" rx="2" fill="#f5a623" opacity="0.5"/>
+  <rect x="556" y="170" width="18" height="25" rx="2" fill="#f5a623" opacity="0.25"/>
+  <!-- Line chart bottom -->
+  <rect x="20" y="280" width="270" height="100" rx="8" fill="#161616" stroke="#222" stroke-width="1"/>
+  <rect x="36" y="294" width="60" height="8" rx="2" fill="#555"/>
+  <polyline points="40,360 70,345 100,350 130,330 160,340 190,320 220,325 250,310 270,315" stroke="#f5a623" stroke-width="2" fill="none" opacity="0.5"/>
+  <polyline points="40,365 70,355 100,360 130,345 160,355 190,340 220,345 250,330 270,335" stroke="#28c840" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <!-- Stats cards -->
+  <rect x="300" y="280" width="280" height="100" rx="8" fill="#161616" stroke="#222" stroke-width="1"/>
+  <rect x="316" y="294" width="80" height="8" rx="2" fill="#555"/>
+  <rect x="316" y="314" width="50" height="20" rx="3" fill="#f5a623" opacity="0.15"/>
+  <rect x="380" y="314" width="50" height="20" rx="3" fill="#28c840" opacity="0.15"/>
+  <rect x="444" y="314" width="50" height="20" rx="3" fill="#febc2e" opacity="0.15"/>
+  <rect x="508" y="314" width="50" height="20" rx="3" fill="#ff5f57" opacity="0.15"/>
+  <rect x="316" y="348" width="240" height="8" rx="2" fill="#333"/>
+  <rect x="316" y="362" width="180" height="8" rx="2" fill="#333"/>
+</svg>

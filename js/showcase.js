@@ -241,12 +241,31 @@ function initTech() {
 }
 
 
-// ===== GALLERY ANIMATIONS =====
+// ===== GALLERY — POLYGON HONEYCOMB + LIGHTBOX =====
 function initGallery() {
-  // Section label
-  const label = document.querySelector('.sc-gallery .sc-section-label .reveal-heading');
+  var items = document.querySelectorAll('.sc-gallery-item');
+  var isMobile = window.innerWidth < 768;
+
+  // Assign honeycomb grid positions (desktop only — tablet/mobile use CSS auto-flow)
+  // Each batch of 3 = one row; alternating rows offset by 1 column; NO row overlap
+  if (!isMobile) {
+    items.forEach(function (item, i) {
+      var batch = Math.floor(i / 3);        // which row (0, 1, 2, ...)
+      var col = i % 3;                       // position within the row (0, 1, 2)
+      var isOffset = batch % 2 === 1;        // even batches = normal, odd = offset
+
+      var colStart = isOffset ? (col * 2 + 2) : (col * 2 + 1);
+      var colEnd = colStart + 2;
+
+      item.style.gridColumn = colStart + ' / ' + colEnd;
+      item.style.gridRow = String(batch + 1);
+    });
+  }
+
+  // Section label animation
+  var label = document.querySelector('.sc-gallery .sc-section-label .reveal-heading');
   if (label) {
-    const chars = splitText(label, 'char');
+    var chars = splitText(label, 'char');
     gsap.to(chars, {
       opacity: 1, y: 0, rotateX: 0,
       duration: 0.5, stagger: 0.02, ease: 'power3.out',
@@ -258,19 +277,184 @@ function initGallery() {
     });
   }
 
-  // Gallery items — scale reveal
-  document.querySelectorAll('.sc-gallery-item').forEach((item, i) => {
+  // Staggered scroll-reveal for gallery items
+  items.forEach(function (item, i) {
     gsap.to(item, {
       opacity: 1, scale: 1,
       duration: 0.7, ease: 'power2.out',
-      delay: i * 0.12,
+      delay: i * 0.1,
       scrollTrigger: {
         trigger: item,
-        start: 'top 85%',
+        start: 'top 88%',
         toggleActions: 'play none none reverse',
       },
     });
   });
+
+  ScrollTrigger.refresh();
+
+  // Initialize lightbox
+  initGalleryLightbox(items);
+}
+
+
+// ===== LIGHTBOX SYSTEM =====
+function initGalleryLightbox(items) {
+  var lightbox = document.getElementById('scGalleryLightbox');
+  if (!lightbox) return;
+
+  var backdrop  = lightbox.querySelector('.sc-lightbox-backdrop');
+  var lbImg     = lightbox.querySelector('.sc-lightbox-img');
+  var caption   = lightbox.querySelector('.sc-lightbox-caption');
+  var counter   = lightbox.querySelector('.sc-lightbox-counter');
+  var infoBar   = lightbox.querySelector('.sc-lightbox-info');
+  var closeBtn  = lightbox.querySelector('.sc-lightbox-close');
+  var prevBtn   = lightbox.querySelector('.sc-lightbox-prev');
+  var nextBtn   = lightbox.querySelector('.sc-lightbox-next');
+
+  var currentIndex = 0;
+  var isOpen = false;
+  var isAnimating = false;
+  var totalItems = items.length;
+
+  // Collect image data
+  var imageData = Array.from(items).map(function (item) {
+    var imgEl = item.querySelector('img');
+    var captionEl = item.querySelector('.sc-gallery-caption-text');
+    return {
+      src: imgEl.src,
+      alt: imgEl.alt,
+      caption: captionEl ? captionEl.textContent : imgEl.alt,
+    };
+  });
+
+  // Update lightbox content for a given index
+  function updateContent(index) {
+    lbImg.src = imageData[index].src;
+    lbImg.alt = imageData[index].alt;
+    caption.textContent = imageData[index].caption;
+    counter.textContent = (index + 1) + ' / ' + totalItems;
+  }
+
+  // Open lightbox — smooth scale + fade from center
+  function openLightbox(index) {
+    if (isAnimating) return;
+    isAnimating = true;
+    currentIndex = index;
+    isOpen = true;
+
+    updateContent(index);
+
+    lightbox.hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    // Reset any leftover inline styles
+    gsap.set(lbImg, { clearProps: 'all' });
+
+    var tl = gsap.timeline({
+      onComplete: function () { isAnimating = false; },
+    });
+
+    // Backdrop + image scale-in simultaneously
+    tl.fromTo(backdrop,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.4, ease: 'power2.out' }
+    );
+    tl.fromTo(lbImg,
+      { scale: 0.7, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out' },
+      '-=0.35'
+    );
+
+    // Fade in controls
+    tl.to([closeBtn, prevBtn, nextBtn], {
+      opacity: 1, duration: 0.3, stagger: 0.05,
+    }, '-=0.2');
+
+    // Fade in info bar
+    tl.to(infoBar, { opacity: 1, duration: 0.3 }, '-=0.2');
+  }
+
+  // Close lightbox
+  function closeLightbox() {
+    if (!isOpen || isAnimating) return;
+    isAnimating = true;
+
+    var tl = gsap.timeline({
+      onComplete: function () {
+        lightbox.hidden = true;
+        document.body.style.overflow = '';
+        isOpen = false;
+        isAnimating = false;
+        gsap.set(lbImg, { clearProps: 'all' });
+        gsap.set([closeBtn, prevBtn, nextBtn, infoBar, backdrop], { clearProps: 'opacity' });
+      },
+    });
+
+    tl.to([closeBtn, prevBtn, nextBtn, infoBar], { opacity: 0, duration: 0.2 });
+    tl.to(lbImg, {
+      scale: 0.9, opacity: 0,
+      duration: 0.3, ease: 'power2.in',
+    }, '-=0.1');
+    tl.to(backdrop, { opacity: 0, duration: 0.3 }, '-=0.2');
+  }
+
+  // Navigate between images
+  function navigate(direction) {
+    if (isAnimating) return;
+    isAnimating = true;
+    currentIndex = (currentIndex + direction + totalItems) % totalItems;
+
+    gsap.to(lbImg, {
+      opacity: 0, x: direction * -30,
+      duration: 0.2, ease: 'power2.in',
+      onComplete: function () {
+        updateContent(currentIndex);
+        gsap.fromTo(lbImg,
+          { opacity: 0, x: direction * 30 },
+          {
+            opacity: 1, x: 0,
+            duration: 0.3, ease: 'power2.out',
+            onComplete: function () { isAnimating = false; },
+          }
+        );
+      },
+    });
+  }
+
+  // Event listeners — click to open
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => openLightbox(i));
+  });
+
+  // Close triggers
+  closeBtn.addEventListener('click', closeLightbox);
+  backdrop.addEventListener('click', closeLightbox);
+
+  // Navigation
+  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
+  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!isOpen) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+
+  // Touch swipe support
+  let touchStartX = 0;
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', (e) => {
+    const delta = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(delta) > 50) {
+      navigate(delta > 0 ? -1 : 1);
+    }
+  }, { passive: true });
 }
 
 

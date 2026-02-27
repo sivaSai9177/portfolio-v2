@@ -75,6 +75,7 @@
 
 .sc-hero-title {
   font-family: var(--font-heading);
+  font-size: 44px;
   font-size: clamp(32px, 5vw, 56px);
   font-weight: 800;
   line-height: 1.1;
@@ -129,6 +130,7 @@
   color: var(--text-secondary);
   background: var(--surface-glass);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border);
 }
 
@@ -230,6 +232,7 @@
 .sc-overview-card {
   background: var(--surface-glass);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--surface-glass-border);
   border-radius: var(--radius);
   padding: 32px;
@@ -316,6 +319,7 @@
   gap: 0;
   background: var(--surface-glass);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--surface-glass-border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -433,6 +437,7 @@
 .sc-tech-group {
   background: var(--surface-glass);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--surface-glass-border);
   border-radius: var(--radius);
   padding: 20px;
@@ -457,46 +462,432 @@
 }
 
 
-/* ===== GALLERY ===== */
-.sc-gallery {
-  background: var(--section-bg-lighter);
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
+/* ===== GALLERY — Polygon Honeycomb + Neumorphic ===== */
+/* Force dark mode on gallery regardless of theme */
+.sc-gallery,
+[data-theme="light"] .sc-gallery {
+  --bg: #0a0a0a;
+  --bg-secondary: #111;
+  --surface: #161616;
+  --surface-hover: #1c1c1c;
+  --border: #222;
+  --text: #f0f0f0;
+  --text-secondary: #8a8a8a;
+  --text-muted: #555;
+  --accent: #f5a623;
+  --accent-hover: #e09515;
+  --accent-soft: rgba(245, 166, 35, 0.08);
+  --accent-border: rgba(245, 166, 35, 0.18);
+  --accent-glow: rgba(245, 166, 35, 0.15);
+  --surface-glass: rgba(22, 22, 22, 0.85);
+  --surface-glass-border: rgba(34, 34, 34, 0.6);
+  --overlay-bg: rgba(10, 10, 10, 0.97);
+  --shadow-card: rgba(0, 0, 0, 0.3);
+  --shadow-accent: rgba(245, 166, 35, 0.3);
+
+  /* ---- Expanded hex accent palette (cycles per item) ---- */
+  --hex-amber: 245, 166, 35;
+  --hex-cyan: 34, 211, 238;
+  --hex-rose: 244, 114, 182;
+  --hex-emerald: 52, 211, 153;
+  --hex-violet: 129, 140, 248;
+  --hex-coral: 251, 146, 60;
+
+  background: #131315;
+  position: relative;
+  color: #f0f0f0;
+  color: var(--text);
 }
 
+/* --- Per-item accent color assignment (cycles every 6) --- */
+.sc-gallery-item:nth-child(6n+1) { --hex-rgb: var(--hex-amber);   --hex-color: #f5a623; }
+.sc-gallery-item:nth-child(6n+2) { --hex-rgb: var(--hex-cyan);    --hex-color: #22d3ee; }
+.sc-gallery-item:nth-child(6n+3) { --hex-rgb: var(--hex-rose);    --hex-color: #f472b6; }
+.sc-gallery-item:nth-child(6n+4) { --hex-rgb: var(--hex-emerald); --hex-color: #34d399; }
+.sc-gallery-item:nth-child(6n+5) { --hex-rgb: var(--hex-violet);  --hex-color: #818cf8; }
+.sc-gallery-item:nth-child(6n+6) { --hex-rgb: var(--hex-coral);   --hex-color: #fb923c; }
+
+/* Multi-color ambient glow behind grid */
+.sc-gallery::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background:
+    radial-gradient(ellipse at 20% 25%, rgba(245, 166, 35, 0.025) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 20%, rgba(34, 211, 238, 0.02) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 75%, rgba(244, 114, 182, 0.015) 0%, transparent 45%),
+    radial-gradient(ellipse at 15% 80%, rgba(129, 140, 248, 0.02) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+/* --- Honeycomb grid: 7 cols, generous spacing for shadows to breathe --- */
 .sc-gallery-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 20px;
+  column-gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Hex item: neumorphic opposing shadows (light top-left, dark bottom-right) --- */
+.sc-gallery-item {
+  cursor: pointer;
+  position: relative;
+  opacity: 0;
+  transform: scale(0.9);
+  z-index: 1;
+  filter:
+    drop-shadow(-4px -4px 8px rgba(255, 255, 255, 0.045))
+    drop-shadow(5px 7px 14px rgba(0, 0, 0, 0.65))
+    drop-shadow(2px 3px 5px rgba(0, 0, 0, 0.4))
+    drop-shadow(-1px -1px 3px rgba(255, 255, 255, 0.025));
+  transition: z-index 0s, filter 0.45s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ======= HOVER VARIANT A — "Morph & Lift" (items 1, 4 → 3n+1) ======= */
+.sc-gallery-item:nth-child(3n+1):hover {
+  z-index: 10;
+  transform: scale(1.02) translateY(-4px);
+  filter:
+    drop-shadow(-5px -5px 10px rgba(255, 255, 255, 0.06))
+    drop-shadow(8px 14px 28px rgba(0, 0, 0, 0.7))
+    drop-shadow(0 0 22px rgba(var(--hex-rgb), 0.22))
+    drop-shadow(0 0 44px rgba(var(--hex-rgb), 0.08));
+}
+
+/* ======= HOVER VARIANT B — "Glow Pulse" (items 2, 5 → 3n+2): hex stays, glow breathes ======= */
+.sc-gallery-item:nth-child(3n+2):hover {
+  z-index: 10;
+  transform: scale(1.04);
+  filter:
+    drop-shadow(-4px -4px 8px rgba(255, 255, 255, 0.05))
+    drop-shadow(5px 7px 16px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 24px rgba(var(--hex-rgb), 0.3))
+    drop-shadow(0 0 50px rgba(var(--hex-rgb), 0.12));
+}
+
+/* B-variant: override — keep hex shape, no morph */
+.sc-gallery-item:nth-child(3n+2):hover .sc-gallery-item-inner {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  padding: 4px;
+  background: linear-gradient(
+    145deg,
+    rgba(var(--hex-rgb), 0.22) 0%,
+    rgba(var(--hex-rgb), 0.06) 40%,
+    rgba(19, 19, 21, 0.9) 65%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+.sc-gallery-item:nth-child(3n+2):hover .sc-gallery-item-inner img {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transform: scale(1.1);
+  filter: brightness(1.12) saturate(1.1);
+}
+.sc-gallery-item:nth-child(3n+2):hover .sc-gallery-caption {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* ======= HOVER VARIANT C — "Tilt & Shine" (items 3, 6 → 3n): rotates + shine sweep ======= */
+.sc-gallery-item:nth-child(3n):hover {
+  z-index: 10;
+  transform: scale(1.03) rotate(3deg);
+  filter:
+    drop-shadow(-5px -3px 10px rgba(255, 255, 255, 0.05))
+    drop-shadow(6px 10px 22px rgba(0, 0, 0, 0.65))
+    drop-shadow(0 0 20px rgba(var(--hex-rgb), 0.25))
+    drop-shadow(0 0 42px rgba(var(--hex-rgb), 0.1));
+}
+
+/* Shine sweep pseudo on tilt variant */
+.sc-gallery-item-inner::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; right: 0; bottom: 0;
+  width: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.12) 45%,
+    rgba(255, 255, 255, 0.04) 55%,
+    transparent 60%
+  );
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: left 0.6s ease, opacity 0.4s ease,
+              clip-path 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              -webkit-clip-path 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sc-gallery-item:nth-child(3n):hover .sc-gallery-item-inner::after {
+  left: 100%;
+  opacity: 1;
+}
+/* Sync shine clip-path on variant A morph */
+.sc-gallery-item:nth-child(3n+1):hover .sc-gallery-item-inner::after {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+}
+
+/* --- Inner: neumorphic raised edge via thick padding + directional gradient --- */
+.sc-gallery-item-inner {
+  width: 100%;
+  aspect-ratio: 1 / 1.1547;
+  position: relative;
+  overflow: hidden;
+  padding: 5px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.11) 0%,
+    rgba(200, 200, 200, 0.05) 35%,
+    rgba(19, 19, 21, 0.9) 60%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: clip-path 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              -webkit-clip-path 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.4s ease,
+              padding 0.4s ease;
+}
+
+/* Default hover inner (Variant A morph) — accent-tinted neumorphic edge */
+.sc-gallery-item:hover .sc-gallery-item-inner {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+  padding: 4px;
+  background: linear-gradient(
+    145deg,
+    rgba(var(--hex-rgb), 0.25) 0%,
+    rgba(var(--hex-rgb), 0.1) 35%,
+    rgba(19, 19, 21, 0.9) 60%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+}
+
+/* --- Image: inset clip-path, gap = visible neumorphic border ring --- */
+.sc-gallery-item-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  display: block;
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: clip-path 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              -webkit-clip-path 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.5s ease,
+              filter 0.5s ease;
+}
+
+.sc-gallery-item:hover .sc-gallery-item-inner img {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+  transform: scale(1.05);
+  filter: brightness(1.08);
+}
+
+/* --- Caption overlay (hover) --- */
+.sc-gallery-caption {
+  position: absolute;
+  top: 5px; right: 5px; bottom: 5px; left: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.85) 0%,
+    rgba(10, 10, 10, 0.3) 50%,
+    transparent 100%
+  );
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  opacity: 0;
+  transition: opacity 0.4s ease,
+              clip-path 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              -webkit-clip-path 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.sc-gallery-item:hover .sc-gallery-caption {
+  opacity: 1;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+}
+
+.sc-gallery-caption-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--hex-color, var(--accent));
+  transform: translateY(10px);
+  transition: transform 0.4s ease 0.1s, color 0.3s ease;
+}
+
+.sc-gallery-item:hover .sc-gallery-caption-text {
+  transform: translateY(0);
+}
+
+.sc-gallery-expand-icon {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  font-size: 20px;
+  color: var(--hex-color, var(--accent));
+  background: rgba(19, 19, 21, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(var(--hex-rgb), 0.15);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8) translateX(-50%);
+  transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s;
+}
+
+.sc-gallery-item:hover .sc-gallery-expand-icon {
+  opacity: 0.9;
+  transform: scale(1) translateX(-50%);
+}
+
+/* --- Lightbox (always dark, even in light theme) --- */
+.sc-gallery-lightbox,
+[data-theme="light"] .sc-gallery-lightbox {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --overlay-bg: rgba(10, 10, 10, 0.97);
+  --border: #222;
+  --text-secondary: #8a8a8a;
+  --accent: #f5a623;
+  --surface-glass: rgba(22, 22, 22, 0.85);
+  color: #f0f0f0;
+}
+
+.sc-gallery-lightbox[hidden] {
+  display: none;
+}
+
+.sc-lightbox-backdrop {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: rgba(10, 10, 10, 0.97);
+  background: var(--overlay-bg);
+  opacity: 0;
+}
+
+.sc-lightbox-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
 }
 
-.sc-gallery-item {
+.sc-lightbox-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 14px;
   border-radius: var(--radius);
-  overflow: hidden;
+  border: 1px solid #222;
   border: 1px solid var(--border);
-  opacity: 0;
-  transform: scale(0.9);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
 }
 
-.sc-gallery-item:hover {
-  transform: scale(1.02);
-  box-shadow: 0 16px 48px var(--shadow-card);
-}
-
-.sc-gallery-item--wide {
-  grid-column: 1 / -1;
-}
-
-.sc-gallery-item img {
+.sc-lightbox-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  display: block;
+  max-width: 90vw;
+  opacity: 0;
+}
+
+.sc-lightbox-caption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: #8a8a8a;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+.sc-lightbox-counter {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: #f5a623;
+  color: var(--accent);
+}
+
+/* Lightbox buttons */
+.sc-lightbox-close,
+.sc-lightbox-prev,
+.sc-lightbox-next {
+  position: absolute;
+  z-index: 2;
+  background: rgba(22, 22, 22, 0.85);
+  background: var(--surface-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(34, 34, 34, 0.6);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f0f0f0;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+}
+
+.sc-lightbox-close:hover,
+.sc-lightbox-prev:hover,
+.sc-lightbox-next:hover {
+  border-color: var(--accent-border);
+  color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.sc-lightbox-close { top: 24px; right: 24px; }
+.sc-lightbox-prev  { left: 24px; top: 50%; transform: translateY(-50%); }
+.sc-lightbox-next  { right: 24px; top: 50%; transform: translateY(-50%); }
+
+.sc-lightbox-close .material-icons-round,
+.sc-lightbox-prev .material-icons-round,
+.sc-lightbox-next .material-icons-round {
+  font-size: 22px;
 }
 
 
 /* ===== SHOWCASE CTA HEADING — gradient text + glow ===== */
 .sc-cta-heading {
   position: relative;
+  color: #f5a623;
   background: linear-gradient(135deg, var(--text), var(--accent), var(--text));
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -546,6 +937,7 @@
 
 .sc-cta-heading {
   font-family: var(--font-heading);
+  font-size: 40px;
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 800;
   line-height: 1.1;
@@ -597,8 +989,83 @@
 
   .sc-tech-grid { grid-template-columns: 1fr 1fr; }
 
-  .sc-gallery-grid { grid-template-columns: 1fr; }
-  .sc-gallery-item--wide { grid-column: 1; }
+  /* Tablet: 2-column grid with angular clip-paths + neumorphic depth */
+  .sc-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .sc-gallery-item {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    filter:
+      drop-shadow(-3px -3px 6px rgba(255, 255, 255, 0.04))
+      drop-shadow(4px 6px 12px rgba(0, 0, 0, 0.6))
+      drop-shadow(1px 2px 4px rgba(0, 0, 0, 0.35));
+  }
+  /* Tablet: all variants use same hover (no rotate/tilt on touch) */
+  .sc-gallery-item:hover,
+  .sc-gallery-item:nth-child(3n+1):hover,
+  .sc-gallery-item:nth-child(3n+2):hover,
+  .sc-gallery-item:nth-child(3n):hover {
+    transform: scale(1) translateY(-2px);
+    filter:
+      drop-shadow(-4px -4px 8px rgba(255, 255, 255, 0.05))
+      drop-shadow(6px 10px 20px rgba(0, 0, 0, 0.7))
+      drop-shadow(0 0 16px rgba(var(--hex-rgb), 0.18));
+  }
+  .sc-gallery-item-inner {
+    aspect-ratio: 16 / 10;
+    padding: 4px;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(200, 200, 200, 0.04) 35%,
+      rgba(19, 19, 21, 0.85) 60%,
+      rgba(0, 0, 0, 0.18) 100%
+    );
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    -webkit-clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  }
+  .sc-gallery-item-inner img {
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    -webkit-clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  }
+  /* Tablet: all hover variants → same angular morph with per-item color */
+  .sc-gallery-item:hover .sc-gallery-item-inner,
+  .sc-gallery-item:nth-child(3n+2):hover .sc-gallery-item-inner {
+    padding: 3px;
+    background: linear-gradient(
+      145deg,
+      rgba(var(--hex-rgb), 0.2) 0%,
+      rgba(var(--hex-rgb), 0.06) 35%,
+      rgba(19, 19, 21, 0.85) 60%,
+      rgba(0, 0, 0, 0.22) 100%
+    );
+    clip-path: polygon(0 0, 100% 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
+  .sc-gallery-item:hover .sc-gallery-item-inner img,
+  .sc-gallery-item:nth-child(3n+2):hover .sc-gallery-item-inner img {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+    transform: scale(1.05);
+    filter: brightness(1.08);
+  }
+  .sc-gallery-item-inner::after { display: none; }
+  .sc-gallery-caption {
+    top: 4px; right: 4px; bottom: 4px; left: 4px;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    -webkit-clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  }
+  .sc-gallery-item:hover .sc-gallery-caption,
+  .sc-gallery-item:nth-child(3n+2):hover .sc-gallery-caption {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
+
+  .sc-lightbox-prev { left: 12px; }
+  .sc-lightbox-next { right: 12px; }
+  .sc-lightbox-close { top: 16px; right: 16px; }
 
   .sc-cta { padding: 100px 24px; }
   .sc-cta-actions { flex-direction: column; align-items: center; }
@@ -612,4 +1079,51 @@
   .sc-hero-meta { flex-wrap: wrap; gap: 16px; }
   .sc-feature-body { padding: 20px; }
   .sc-tech-grid { grid-template-columns: 1fr; }
+
+  .sc-gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .sc-gallery-item,
+  .sc-gallery-item:nth-child(3n+1),
+  .sc-gallery-item:nth-child(3n+2),
+  .sc-gallery-item:nth-child(3n) {
+    transform: scale(0.9);
+    filter:
+      drop-shadow(-2px -2px 5px rgba(255, 255, 255, 0.035))
+      drop-shadow(3px 5px 10px rgba(0, 0, 0, 0.55))
+      drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.3));
+  }
+  .sc-gallery-item-inner {
+    aspect-ratio: 16 / 10;
+    padding: 3px;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.09) 0%,
+      rgba(200, 200, 200, 0.03) 35%,
+      rgba(19, 19, 21, 0.85) 60%,
+      rgba(0, 0, 0, 0.15) 100%
+    );
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    -webkit-clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  .sc-gallery-item-inner::after { display: none; }
+  .sc-gallery-item-inner img {
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    -webkit-clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  .sc-gallery-caption { display: none; }
+  .sc-gallery-expand-icon { display: none; }
+
+  .sc-lightbox-img { max-width: 95vw; max-height: 70vh; }
+  .sc-lightbox-prev,
+  .sc-lightbox-next {
+    top: auto;
+    bottom: 24px;
+    transform: none;
+    width: 48px;
+    height: 48px;
+  }
+  .sc-lightbox-prev { left: calc(50% - 60px); }
+  .sc-lightbox-next { right: calc(50% - 60px); }
 }

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sirigiri Siva Sai — Frontend Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <style>
+    :root {
+      /* Dark theme (default) */
+      --bg: #0f0f0f;
+      --surface: #181818;
+      --sidebar-bg: #141414;
+      --sidebar-border: #222;
+      --text-primary: #f0f0f0;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666;
+      --accent: #f5a623;
+      --accent-soft: rgba(245,166,35,0.10);
+      --accent-border: rgba(245,166,35,0.22);
+      --tag-bg: #1e1e1e;
+      --tag-border: #2a2a2a;
+      --tag-text: #ccc;
+      --divider: #252525;
+      --card-bg: #1a1a1a;
+      --shadow: 0 20px 60px rgba(0,0,0,0.5);
+      --icon-section: #f5a623;
+    }
+
+    [data-theme="light"] {
+      --bg: #f2f0eb;
+      --surface: #ffffff;
+      --sidebar-bg: #faf9f7;
+      --sidebar-border: #e8e6e1;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #999;
+      --accent: #c8871a;
+      --accent-soft: rgba(200,135,26,0.08);
+      --accent-border: rgba(200,135,26,0.2);
+      --tag-bg: #f5f3ef;
+      --tag-border: #e0ddd7;
+      --tag-text: #444;
+      --divider: #e8e6e1;
+      --card-bg: #faf9f7;
+      --shadow: 0 20px 60px rgba(0,0,0,0.08);
+      --icon-section: #c8871a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--divider);
+      border-radius: 40px;
+      padding: 6px 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+
+    .theme-toggle button {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      background: transparent;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .theme-toggle button.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .theme-toggle button:hover { color: var(--accent); }
+
+    /* A4 Page */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 24px auto;
+      background: var(--surface);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--sidebar-border);
+      padding: 32px 20px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .profile-photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 3px solid var(--accent);
+      background: var(--tag-bg);
+    }
+
+    .profile-photo div {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 11px;
+    }
+
+    .name-block { text-align: center; }
+
+    .name-block h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+
+    .name-block .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-top: 5px;
+    }
+
+    /* Sidebar section */
+    .sb-section { }
+
+    .sb-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sb-heading .material-icons-round {
+      font-size: 15px;
+      color: var(--accent);
+    }
+
+    .sb-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--divider);
+    }
+
+    /* Contact */
+    .contact-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 7px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .contact-row .material-icons-round {
+      font-size: 14px;
+      color: var(--accent);
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .contact-row a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .contact-row a:hover { color: var(--accent); }
+
+    /* Skill categories */
+    .skill-cat { margin-bottom: 8px; }
+
+    .skill-cat-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+    }
+
+    .skill-pills span {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 2.5px 7px;
+      border-radius: 3px;
+      font-size: 9.5px;
+      font-weight: 500;
+      border: 1px solid var(--tag-border);
+    }
+
+    .skill-pills span.hl {
+      color: var(--accent);
+      border-color: var(--accent-border);
+      background: var(--accent-soft);
+    }
+
+    /* Sidebar lists */
+    .sb-list {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .sb-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .sb-tags span {
+      font-size: 10px;
+      color: var(--text-secondary);
+      background: var(--tag-bg);
+      border: 1px solid var(--tag-border);
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    /* Social row */
+    .social-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .social-row a {
+      background: var(--accent);
+      color: var(--surface);
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      font-size: 14px;
+      transition: opacity 0.2s;
+    }
+
+    .social-row a:hover { opacity: 0.8; }
+
+    /* Education sidebar */
+    .edu-item { margin-bottom: 8px; }
+
+    .edu-item .edu-year {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .edu-item .edu-degree {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .edu-item .edu-school {
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main {
+      padding: 32px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .section-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-heading .material-icons-round {
+      font-size: 18px;
+    }
+
+    .section-heading::after {
+      content: '';
+      flex: 1;
+      height: 1.5px;
+      background: linear-gradient(to right, var(--accent), transparent);
+    }
+
+    /* Summary */
+    .summary {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      border-left: 3px solid var(--accent);
+      padding-left: 14px;
+    }
+
+    /* Competencies */
+    .comp-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .comp-grid span {
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 4px 11px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      border: 1px solid var(--accent-border);
+      letter-spacing: 0.2px;
+    }
+
+    /* Experience */
+    .exp-block {
+      margin-bottom: 16px;
+      padding-left: 16px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 1px;
+    }
+
+    .exp-company {
+      font-family: 'Sora', sans-serif;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .exp-dates {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--accent-border);
+      white-space: nowrap;
+    }
+
+    .exp-role {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .exp-context {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    /* Narrative paragraph */
+    .exp-narrative {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .exp-block ul { list-style: none; padding: 0; }
+
+    .exp-block ul li {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 2px;
+    }
+
+    .exp-block ul li::before {
+      content: '\25B8';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 9px;
+      top: 3px;
+    }
+
+    .exp-block ul li strong { color: var(--text-primary); font-weight: 600; }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-top: 6px;
+    }
+
+    .exp-tags span {
+      background: var(--tag-bg);
+      color: var(--accent);
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-size: 9px;
+      font-weight: 600;
+      border: 1px solid var(--tag-border);
+    }
+
+    /* Achievements */
+    .ach-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .ach-icon {
+      width: 26px;
+      height: 26px;
+      background: var(--accent-soft);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--accent-border);
+    }
+
+    .ach-icon .material-icons-round {
+      font-size: 14px;
+      color: var(--accent);
+    }
+
+    .ach-text {
+      font-size: 10.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .ach-text strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Learning Journey */
+    .journey-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .journey-card {
+      background: var(--card-bg);
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+
+    .journey-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .journey-card-title .material-icons-round {
+      font-size: 13px;
+    }
+
+    .journey-card .skill-pills { gap: 3px; }
+
+    /* Declaration */
+    .declaration {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--divider);
+      padding-top: 12px;
+    }
+
+    .declaration .sign-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+
+    /* Page 2 */
+    .page-2 {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .page-2 .main {
+      padding: 32px 36px;
+    }
+
+    /* Print */
+    @media print {
+      body { background: #fff !important; }
+      .theme-toggle { display: none !important; }
+      .page {
+        box-shadow: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        page-break-after: always;
+      }
+      .page-2 { page-break-before: always; }
+    }
+
+    @media (max-width: 800px) {
+      .page { grid-template-columns: 1fr; width: 100%; margin: 0; border-radius: 0; }
+      .theme-toggle { top: 10px; right: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Theme Toggle -->
+<div class="theme-toggle">
+  <button id="btn-light" onclick="setTheme('light')" title="Light mode">
+    <span class="material-icons-round">light_mode</span>
+  </button>
+  <button id="btn-dark" class="active" onclick="setTheme('dark')" title="Dark mode">
+    <span class="material-icons-round">dark_mode</span>
+  </button>
+</div>
+
+<!-- ==================== PAGE 1 ==================== -->
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="profile-photo">
+      <img src="shiva-passport-pic-s.jpg" alt="Sirigiri Siva Sai" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+
+    <div class="name-block">
+      <h1>Sirigiri<br>Siva Sai</h1>
+      <div class="title">Frontend Developer</div>
+    </div>
+
+    <!-- Contact -->
+    <div class="sb-section">
+      <div class="sb-heading">
+        <span class="material-icons-round">contact_mail</span> Contact
+      </div>
+      <div class="contact-row">
+        <span class="material-icons-round">phone</span>
+        <span>+91 9177777922</span>
+      </div>
+      <div class="contact-row">
+        <span class="material-icons-round">email</span>
+        <a href="mailto:sirigirisiva1@gmail.com">sirigirisiva1@gmail.com</a>
+      </div>
+      <div class="contact-row">
+        <span class="material-icons-round">location_on</span>
+        <span>Bengaluru, Karnataka</span>
+      </div>
+      <div class="contact-row">
+        <span class="material-icons-round">language</span>
+        <a href="https://sivasai9177.github.io/portfolio" target="_blank">sivasai9177.github.io/portfolio</a>
+      </div>
+      <div class="social-row" style="margin-top:6px;">
+        <a href="#" title="GitHub"><span class="material-icons-round" style="font-size:14px;">code</span></a>
+        <a href="#" title="LinkedIn"><span class="material-icons-round" style="font-size:14px;">work</span></a>
+      </div>
+    </div>
+
+    <!-- Technical Skills -->
+    <div class="sb-section">
+      <div class="sb-heading">
+        <span class="material-icons-round">terminal</span> Tech Stack
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-label">Core</div>
+        <div class="skill-pills">
+          <span class="hl">TypeScript</span>
+          <span class="hl">JavaScript ES6+</span>
+          <span>HTML5</span>
+          <span>CSS3</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-label">Frameworks</div>
+        <div class="skill-pills">
+          <span class="hl">React 19</span>
+          <span class="hl">Next.js</span>
+          <span>Angular</span>
+          <span>Expo</span>
+          <span>TanStack Start</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-label">UI Systems</div>
+        <div class="skill-pills">
+          <span class="hl">Material UI v7</span>
+          <span>MUI X Data Grid</span>
+          <span>MUI X Charts</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-label">State & Data</div>
+        <div class="skill-pills">
+          <span class="hl">TanStack Query</span>
+          <span class="hl">Zustand</span>
+          <span>TanStack Table</span>
+          <span>Axios</span>
+          <span>Socket.io</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-label">Visualization</div>
+        <div class="skill-pills">
+          <span>Recharts</span>
+          <span>D3.js</span>
+          <span>amCharts 5</span>
+          <span>Chart.js</span>
+        </div>
+      </div>
+
+      <div class="skill-cat">
+        <div class="skill-cat-label">Tooling & DX</div>
+        <div class="skill-pills">
+          <span>Vite</span>
+          <span>Git</span>
+          <span>Vitest</span>
+          <span>Zod</span>
+          <span>ESLint</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Languages -->
+    <div class="sb-section">
+      <div class="sb-heading">
+        <span class="material-icons-round">translate</span> Languages
+      </div>
+      <div class="sb-list">English &middot; Hindi &middot; Telugu &middot; Marathi</div>
+    </div>
+
+    <!-- Soft Skills -->
+    <div class="sb-section">
+      <div class="sb-heading">
+        <span class="material-icons-round">psychology</span> Soft Skills
+      </div>
+      <div class="sb-tags">
+        <span>Ownership Mindset</span>
+        <span>Cross-team Communication</span>
+        <span>Problem Decomposition</span>
+        <span>Self-directed Learning</span>
+        <span>Mentoring Peers</span>
+        <span>Agile Collaboration</span>
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div class="sb-section">
+      <div class="sb-heading">
+        <span class="material-icons-round">school</span> Education
+      </div>
+      <div class="edu-item">
+        <div class="edu-year">2014 – 2019</div>
+        <div class="edu-degree">B.Tech (ECE)</div>
+        <div class="edu-school">Reva University, Bangalore</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-year">2012 – 2014</div>
+        <div class="edu-degree">Intermediate</div>
+        <div class="edu-school">Sri Chaitanya Jr. College</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- Summary -->
+    <div>
+      <div class="section-heading">
+        <span class="material-icons-round">person</span> Professional Summary
+      </div>
+      <div class="summary">
+        Frontend Developer with 2+ years of hands-on experience building production cybersecurity management platforms. I specialize in owning frontend architecture end-to-end — from laying the first component and route to modernizing entire codebases with declarative data-fetching and state management patterns. My work sits at the intersection of complex data-heavy interfaces and developer experience: I build the systems my teammates build on.
+      </div>
+    </div>
+
+    <!-- Core Competencies -->
+    <div>
+      <div class="section-heading">
+        <span class="material-icons-round">auto_awesome</span> Core Competencies
+      </div>
+      <div class="comp-grid">
+        <span>Component Architecture</span>
+        <span>Performance Optimization</span>
+        <span>Codebase Modernization</span>
+        <span>State Management Design</span>
+        <span>Data Visualization</span>
+        <span>Design System Thinking</span>
+        <span>API Layer Architecture</span>
+        <span>Developer Experience</span>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div>
+      <div class="section-heading">
+        <span class="material-icons-round">work_history</span> Work Experience
+      </div>
+
+      <!-- Sechpoint -->
+      <div class="exp-block">
+        <div class="exp-header">
+          <span class="exp-company">Sechpoint Pvt Limited</span>
+          <span class="exp-dates">Mar 2025 — Nov 2025</span>
+        </div>
+        <div class="exp-role">Frontend Developer</div>
+        <div class="exp-context">Cybersecurity &middot; Product Engineering &middot; Bangalore</div>
+
+        <div class="exp-narrative">
+          When I joined Sechpoint, the product was functional but the frontend was held together by imperative patterns — useEffect-driven API calls, prop drilling, no centralized state, and a monolithic bundle. I took ownership of modernizing the entire frontend architecture while continuing to deliver features.
+        </div>
+
+        <ul>
+          <li><strong>Migrated the data layer</strong> from scattered useEffect calls to TanStack React Query across 90+ components — introducing server-state caching, background refetching, and eliminating race conditions that plagued the previous approach</li>
+          <li><strong>Designed a centralized state architecture</strong> with Zustand, replacing ad-hoc sessionStorage and prop-drilling with typed, predictable stores for authentication flows and device management</li>
+          <li><strong>Implemented route-level code splitting</strong> using React.lazy and Suspense for 60+ routes, significantly reducing initial bundle size and time-to-interactive</li>
+          <li><strong>Built advanced data grid interfaces</strong> with MUI X Data Grid — server-side sorting, dynamic columns, and inline actions for managing firewall rules, device configs, and subscriber records</li>
+          <li><strong>Introduced UI animation patterns</strong> — fade transitions, animated drawer navigation, and collapsible accordion tables — elevating the interface from static to fluid</li>
+          <li><strong>Restructured the project architecture</strong>, establishing clear separation between pages, components, hooks, services, and utilities — making onboarding and code reviews significantly smoother</li>
+        </ul>
+
+        <div class="exp-tags">
+          <span>React 19</span>
+          <span>TypeScript</span>
+          <span>TanStack Query</span>
+          <span>Zustand</span>
+          <span>MUI v7</span>
+          <span>MUI X Data Grid</span>
+          <span>Zod</span>
+          <span>Vite</span>
+        </div>
+      </div>
+
+      <!-- Nubewell -->
+      <div class="exp-block">
+        <div class="exp-header">
+          <span class="exp-company">Nubewell Networks</span>
+          <span class="exp-dates">Mar 2024 — Mar 2025</span>
+        </div>
+        <div class="exp-role">Frontend Developer</div>
+        <div class="exp-context">Cybersecurity &middot; Product Engineering &middot; 3-person Frontend Team &middot; Bangalore</div>
+
+        <div class="exp-narrative">
+          This was where I built everything from zero. I joined a small team tasked with creating a cybersecurity management UI from the ground up. My role was to lay the structural foundation — the layout, navigation, component library, and charting system — so the rest of the team could ship features on a stable, consistent base.
+        </div>
+
+        <ul>
+          <li><strong>Architected the application shell from scratch</strong> — responsive layout, sidebar with nested drawer menus (Config, Analysis, Reports, Logs), protected routing, and the theme infrastructure the entire product runs on</li>
+          <li><strong>Built a shared component library</strong> adopted by the team: form controls, data tables, skeleton loaders, toast notifications, error boundaries, and confirmation modals — standardizing patterns and accelerating delivery</li>
+          <li><strong>Owned the Config module end-to-end</strong> — a complex navigation system spanning 20+ configuration pages: subscriber management, firewall policies, rate limiting, DNS safe search, HTTP redirect, application groups, and more</li>
+          <li><strong>Engineered a composable chart system</strong> with Recharts — bar, area, and stacked area components with configurable themes and tooltip formatters, adopted as the team standard for all dashboard and analytics views</li>
+          <li><strong>Shipped dark/light theme switching</strong> with a custom ThemeContext provider and MUI overrides, enabling seamless mode toggling across every component</li>
+        </ul>
+
+        <div class="exp-tags">
+          <span>React</span>
+          <span>TypeScript</span>
+          <span>Material UI</span>
+          <span>Recharts</span>
+          <span>Axios</span>
+          <span>React Router</span>
+          <span>Socket.io</span>
+          <span>Vite</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== PAGE 2 ==================== -->
+<div class="page page-2">
+  <div class="main">
+
+    <!-- Key Achievements -->
+    <div>
+      <div class="section-heading">
+        <span class="material-icons-round">emoji_events</span> Key Achievements
+      </div>
+
+      <div class="ach-item">
+        <div class="ach-icon"><span class="material-icons-round">swap_horiz</span></div>
+        <div class="ach-text">
+          <strong>Legacy → Modern Migration:</strong> Single-handedly migrated the entire data-fetching layer from imperative useEffect to declarative TanStack Query across 90+ components — establishing caching, background refetching, and optimistic patterns as the new engineering standard.
+        </div>
+      </div>
+
+      <div class="ach-item">
+        <div class="ach-icon"><span class="material-icons-round">foundation</span></div>
+        <div class="ach-text">
+          <strong>Zero-to-One Architecture:</strong> Built the application's layout, navigation system, and reusable component library from day one — the foundational layer that a 3-person team shipped every feature on top of.
+        </div>
+      </div>
+
+      <div class="ach-item">
+        <div class="ach-icon"><span class="material-icons-round">speed</span></div>
+        <div class="ach-text">
+          <strong>Performance at Scale:</strong> Reduced initial load time through route-level code splitting (60+ lazy routes) and optimized rendering of analytics dashboards handling high-frequency network telemetry with virtualization and memoization.
+        </div>
+      </div>
+
+      <div class="ach-item">
+        <div class="ach-icon"><span class="material-icons-round">bar_chart</span></div>
+        <div class="ach-text">
+          <strong>Team-wide Chart System:</strong> Designed a reusable, themeable visualization toolkit (bar, area, stacked area) that became the standard for all data visualization across dashboards, reports, and analytics modules.
+        </div>
+      </div>
+    </div>
+
+    <!-- Continuous Learning & Exploration -->
+    <div>
+      <div class="section-heading">
+        <span class="material-icons-round">rocket_launch</span> Continuous Learning & Exploration
+      </div>
+
+      <div class="exp-narrative" style="margin-bottom:14px;">
+        Beyond my day-to-day work, I'm deeply invested in expanding across the full-stack TypeScript ecosystem. I believe the best frontend engineers understand the systems their UIs talk to — and I actively explore tools that blur the line between frontend and backend.
+      </div>
+
+      <div class="journey-grid">
+        <div class="journey-card">
+          <div class="journey-card-title">
+            <span class="material-icons-round">phone_iphone</span> Mobile
+          </div>
+          <div class="skill-pills">
+            <span class="hl">React Native</span>
+            <span class="hl">Expo</span>
+          </div>
+        </div>
+
+        <div class="journey-card">
+          <div class="journey-card-title">
+            <span class="material-icons-round">dns</span> Backend & ORMs
+          </div>
+          <div class="skill-pills">
+            <span class="hl">Hono</span>
+            <span class="hl">Bun</span>
+            <span>Drizzle</span>
+            <span>Prisma</span>
+          </div>
+        </div>
+
+        <div class="journey-card">
+          <div class="journey-card-title">
+            <span class="material-icons-round">sync_alt</span> RPC & Type-safety
+          </div>
+          <div class="skill-pills">
+            <span class="hl">tRPC</span>
+            <span class="hl">oRPC</span>
+            <span>End-to-end TS</span>
+          </div>
+        </div>
+
+        <div class="journey-card">
+          <div class="journey-card-title">
+            <span class="material-icons-round">smart_toy</span> AI-Assisted Dev
+          </div>
+          <div class="skill-pills">
+            <span class="hl">Claude Code</span>
+            <span class="hl">Codex</span>
+            <span>Gemini</span>
+            <span>Vibe Coding</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What Drives Me -->
+    <div>
+      <div class="section-heading">
+        <span class="material-icons-round">favorite</span> What Drives Me
+      </div>
+      <div class="summary" style="font-style:italic;">
+        I'm drawn to the kind of work where you build systems that other people build on. Whether it's a component library that saves my teammates hours, a data-fetching pattern that prevents an entire class of bugs, or a project structure that makes onboarding seamless — I find deep satisfaction in infrastructure-level frontend work. I'm currently exploring the full TypeScript ecosystem end-to-end — from React Native on mobile to Hono/Bun on the server, connected through type-safe RPC layers — because I believe the future of frontend engineering is full-stack TypeScript. I also actively leverage AI coding tools to accelerate my workflow and push the boundaries of what a small team can deliver.
+      </div>
+    </div>
+
+    <!-- Interests -->
+    <div>
+      <div class="section-heading">
+        <span class="material-icons-round">interests</span> Personal Interests
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);">
+          <span class="material-icons-round" style="font-size:18px;color:var(--accent);">fitness_center</span> Gym
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);">
+          <span class="material-icons-round" style="font-size:18px;color:var(--accent);">sports_tennis</span> Badminton
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);">
+          <span class="material-icons-round" style="font-size:18px;color:var(--accent);">headphones</span> Music
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);">
+          <span class="material-icons-round" style="font-size:18px;color:var(--accent);">restaurant</span> Cooking
+        </div>
+      </div>
+    </div>
+
+    <!-- Declaration -->
+    <div class="declaration">
+      I hereby declare that all information provided above is accurate to the best of my knowledge.
+      <div class="sign-row">
+        <span>February 2025 &middot; Bengaluru</span>
+        <span><strong>Sirigiri Siva Sai</strong></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('btn-light').classList.toggle('active', theme === 'light');
+    document.getElementById('btn-dark').classList.toggle('active', theme === 'dark');
+    localStorage.setItem('cv-theme', theme);
+  }
+
+  // Load saved theme
+  const saved = localStorage.getItem('cv-theme');
+  if (saved) setTheme(saved);
+</script>
+
+</body>
+</html>
