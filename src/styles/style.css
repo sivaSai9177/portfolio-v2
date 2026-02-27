@@ -2293,9 +2293,10 @@ footer,
     -webkit-touch-callout: none;   /* disable iOS callout menu on long-press */
   }
 
-  /* Hide entire top nav + mask on mobile — bottom bar handles navigation */
-  .nav,
-  .nav-top-mask {
+  /* Hide top nav + mask on mobile — bottom bar handles navigation.
+     Scoped to .page-grid (home page) so showcase page can keep its nav. */
+  .page-grid .nav,
+  .page-grid .nav-top-mask {
     display: none !important;
   }
 
