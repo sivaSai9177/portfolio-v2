@@ -4,6 +4,7 @@ import { useThemeStore } from '../../lib/themeStore';
 
 export default function ShowcaseNavbar() {
   const navRef = useRef<HTMLElement>(null);
+  const topMaskRef = useRef<HTMLDivElement>(null);
   const theme = useThemeStore(s => s.theme);
   const toggleWithBubble = useThemeStore(s => s.toggleWithBubble);
 
@@ -11,6 +12,9 @@ export default function ShowcaseNavbar() {
     const handleScroll = () => {
       if (navRef.current) {
         navRef.current.classList.toggle('scrolled', window.scrollY > 60);
+      }
+      if (topMaskRef.current) {
+        topMaskRef.current.classList.toggle('visible', window.scrollY > 200);
       }
     };
     window.addEventListener('scroll', handleScroll);
@@ -21,7 +25,7 @@ export default function ShowcaseNavbar() {
 
   return (
     <>
-    <div className="nav-top-mask" aria-hidden="true" />
+    <div className="nav-top-mask" ref={topMaskRef} aria-hidden="true" />
     <nav className="nav" id="nav" ref={navRef}>
       <Link to="/" className="nav-back">
         <span className="material-icons-round">arrow_back</span>
