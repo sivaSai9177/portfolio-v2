@@ -463,10 +463,10 @@ footer,
   width: calc(100% - 48px);
   border-radius: 100px;
 
-  /* Glass from the start */
+  /* Glass from the start — heavier blur for readability */
   background: var(--nav-scrolled-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(36px) saturate(160%);
+  -webkit-backdrop-filter: blur(36px) saturate(160%);
   border: 1px solid var(--border);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
@@ -474,19 +474,27 @@ footer,
 
 .nav.scrolled {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(44px) saturate(180%);
+  -webkit-backdrop-filter: blur(44px) saturate(180%);
 }
 
-/* Full-width mask — covers the 16px gap above the floating nav
-   so scrolling content doesn't peek through */
+/* Full-width mask — covers the gap from top of window to the floating nav.
+   Hidden by default; appears only after scrolling past the hero section
+   so scrolling content doesn't peek through the gap. */
 .nav-top-mask {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 16px;
-  background: var(--bg);
+  height: 60px;  /* covers the full gap from window top to below the nav */
+  background: linear-gradient(to bottom, var(--bg) 40%, transparent);
   z-index: 99;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.nav-top-mask.visible {
+  opacity: 1;
 }
 
 .nav-logo {
@@ -2285,9 +2293,10 @@ footer,
     -webkit-touch-callout: none;   /* disable iOS callout menu on long-press */
   }
 
-  /* Hide entire top nav on mobile — bottom bar handles navigation */
-  .nav {
-    display: none;
+  /* Hide entire top nav + mask on mobile — bottom bar handles navigation */
+  .nav,
+  .nav-top-mask {
+    display: none !important;
   }
 
   /* Show the floating bottom tab bar */
