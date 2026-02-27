@@ -1539,8 +1539,8 @@ img { max-width: 100%; height: auto; }
 }
 .sc-tech-pill-why {
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-muted);
+  font-size: 11px;
+  color: var(--text-secondary);
   line-height: 1.4;
 }
 
