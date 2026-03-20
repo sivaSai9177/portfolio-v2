@@ -556,15 +556,75 @@
 
     /* Print */
     @media print {
-      body { background: #fff !important; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      @page {
+        size: A4;
+        margin: 8mm;
+      }
+
+      body {
+        background: var(--bg) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
       .theme-toggle { display: none !important; }
+
       .page {
+        width: 100% !important;
+        min-height: 0 !important;
+        height: auto !important;
         box-shadow: none !important;
         margin: 0 !important;
+        padding: 0 !important;
         border-radius: 0 !important;
-        page-break-after: always;
+        grid-template-columns: 240px 1fr !important;
+        page-break-after: auto;
+        page-break-inside: auto;
+        break-inside: auto;
+        overflow: visible !important;
       }
-      .page-2 { page-break-before: always; }
+
+      .page-2 {
+        grid-template-columns: 1fr !important;
+        page-break-before: auto;
+        page-break-inside: auto;
+        break-inside: auto;
+      }
+
+      .sidebar {
+        background: var(--sidebar-bg) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .profile-photo img {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .main { overflow: visible !important; }
+
+      /* Only avoid breaking INSIDE individual items, not whole sections */
+      .exp-block, .ach-item, .journey-card, .edu-item {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      /* Make links visible and clickable in PDF */
+      a[href] {
+        color: var(--accent) !important;
+        text-decoration: underline !important;
+        text-underline-offset: 2px;
+      }
+
+      /* Keep social circle icons styled as circles, not underlined text */
+      .social-row a[href] {
+        text-decoration: none !important;
+        color: var(--surface) !important;
+        background: var(--accent) !important;
+      }
     }
 
     @media (max-width: 800px) {
@@ -618,11 +678,10 @@
       </div>
       <div class="contact-row">
         <span class="material-icons-round">language</span>
-        <a href="https://sivasai9177.github.io/portfolio" target="_blank">sivasai9177.github.io/portfolio</a>
+        <a href="https://shivasai-f3pm.onrender.com" target="_blank" rel="noopener noreferrer">shivasai-f3pm.onrender.com</a>
       </div>
       <div class="social-row" style="margin-top:6px;">
-        <a href="#" title="GitHub"><span class="material-icons-round" style="font-size:14px;">code</span></a>
-        <a href="#" title="LinkedIn"><span class="material-icons-round" style="font-size:14px;">work</span></a>
+        <a href="https://www.linkedin.com/in/sirigiri-siva-sai-b92841171/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><span class="material-icons-round" style="font-size:14px;">work</span></a>
       </div>
     </div>
 
@@ -991,9 +1050,24 @@
     localStorage.setItem('cv-theme', theme);
   }
 
-  // Load saved theme
-  const saved = localStorage.getItem('cv-theme');
-  if (saved) setTheme(saved);
+  // Check query param first (?theme=light or ?theme=dark&print=1)
+  const params = new URLSearchParams(window.location.search);
+  const paramTheme = params.get('theme');
+  const autoPrint = params.get('print');
+
+  if (paramTheme === 'light' || paramTheme === 'dark') {
+    setTheme(paramTheme);
+  } else {
+    const saved = localStorage.getItem('cv-theme');
+    if (saved) setTheme(saved);
+  }
+
+  // Auto-trigger print for PDF download
+  if (autoPrint === '1') {
+    window.addEventListener('load', () => {
+      setTimeout(() => window.print(), 400);
+    });
+  }
 </script>
 
 </body>

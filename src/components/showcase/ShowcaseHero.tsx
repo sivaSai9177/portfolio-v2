@@ -101,7 +101,7 @@ export default function ShowcaseHero() {
           Architected to scale from 100 to 10,000+ managed devices.
         </p>
 
-        <div ref={actionsRef} className="sc-hero-actions">
+        {/* <div ref={actionsRef} className="sc-hero-actions">
           <a href="#" className="sc-btn sc-btn--primary">
             <span className="material-icons-round">visibility</span>
             Live Preview
@@ -110,7 +110,7 @@ export default function ShowcaseHero() {
             <span className="material-icons-round">code</span>
             Source Code
           </a>
-        </div>
+        </div> */}
 
         <div ref={metaRef} className="sc-hero-meta">
           <div className="sc-meta-item">

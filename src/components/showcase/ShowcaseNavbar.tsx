@@ -32,17 +32,19 @@ export default function ShowcaseNavbar() {
         <span>Portfolio</span>
       </Link>
       <span className="nav-project-name">Case Study</span>
-      <button
-        className="theme-toggle"
-        id="themeToggle"
-        aria-label="Toggle theme"
-        onClick={(e) => toggleWithBubble(e.currentTarget)}
-      >
-        <span className="material-icons-round theme-toggle-icon" id="themeIcon">
-          {themeIconText}
-        </span>
-      </button>
-      <Link to="/" hash="contact" className="nav-link nav-link--cta">Let's Talk</Link>
+      <div className='flex items-center gap-4'>
+        <button
+          className="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle theme"
+          onClick={(e) => toggleWithBubble(e.currentTarget)}
+        >
+          <span className="material-icons-round theme-toggle-icon" id="themeIcon">
+            {themeIconText}
+          </span>
+        </button>
+        <Link to="/" hash="contact" className="nav-link nav-link--cta">Let's Talk</Link>
+      </div>
     </nav>
     </>
   );

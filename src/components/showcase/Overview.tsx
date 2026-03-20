@@ -62,9 +62,9 @@ export default function Overview() {
   return (
     <section ref={containerRef} className="sc-overview">
       <div className="sc-section-inner">
-        <div ref={labelRef} className="sc-section-label">
+        <div className="sc-section-label">
           <span className="material-icons-round">shield</span>
-          The Challenge
+            <span ref={labelRef}> The Challenge</span>
         </div>
 
         <div ref={narrativeRef} className="sc-challenge-narrative" style={{ opacity: 0, transform: 'translateY(20px)' }}>

@@ -1857,6 +1857,7 @@ footer,
   padding: 12px 24px;
   border-radius: 100px;
   transition: all var(--transition);
+  cursor: pointer;
 }
 
 .social-btn:hover {
@@ -1878,6 +1879,62 @@ footer,
 
 .social-btn--accent:hover {
   box-shadow: 0 8px 24px var(--shadow-accent);
+}
+
+/* CV Download Menu */
+.cv-download-wrapper {
+  position: relative;
+}
+
+.cv-menu {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--glass-bg, rgba(20, 20, 30, 0.92));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle, rgba(255,255,255,0.08));
+  border-radius: 14px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 190px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  animation: cvMenuIn 0.2s ease-out;
+  z-index: 50;
+}
+
+@keyframes cvMenuIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px) scale(0.95); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+.cv-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, #a0a0a0);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.cv-menu-item:hover {
+  background: var(--accent-soft, rgba(245,166,35,0.12));
+  color: var(--accent, #f5a623);
+}
+
+.cv-menu-item .material-icons-round {
+  font-size: 20px;
 }
 
 

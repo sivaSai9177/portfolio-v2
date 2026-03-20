@@ -22,11 +22,31 @@ export default function Contact() {
   const [showToast, setShowToast] = useState(false);
   const [buttonSending, setButtonSending] = useState(false);
   const [buttonSent, setButtonSent] = useState(false);
+  const [cvMenuOpen, setCvMenuOpen] = useState(false);
+  const cvMenuRef = useRef<HTMLDivElement>(null);
 
   // Initialize EmailJS (using npm package directly — no CDN script needed)
   useEffect(() => {
     emailjs.init({ publicKey: 'Zew0sEqv4Z3RrmSlt' });
   }, []);
+
+  // Close CV menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (cvMenuRef.current && !cvMenuRef.current.contains(e.target as Node)) {
+        setCvMenuOpen(false);
+      }
+    };
+    if (cvMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [cvMenuOpen]);
+
+  const downloadCV = (theme: 'light' | 'dark') => {
+    setCvMenuOpen(false);
+    window.open(`/sirigiri-siva-sai-cv-updated.html?theme=${theme}&print=1`, '_blank');
+  };
 
   // Contact section animations
   useEffect(() => {
@@ -468,9 +488,28 @@ export default function Contact() {
           >
             <span className="material-icons-round">work</span> LinkedIn
           </a>
-          <a href="#" className="social-btn social-btn--accent">
-            <span className="material-icons-round">download</span> Download CV
-          </a>
+          <div className="cv-download-wrapper" ref={cvMenuRef}>
+            <button
+              className="social-btn social-btn--accent"
+              onClick={() => setCvMenuOpen(!cvMenuOpen)}
+              aria-haspopup="true"
+              aria-expanded={cvMenuOpen}
+            >
+              <span className="material-icons-round">download</span> Download CV
+            </button>
+            {cvMenuOpen && (
+              <div className="cv-menu">
+                <button className="cv-menu-item" onClick={() => downloadCV('light')}>
+                  <span className="material-icons-round">light_mode</span>
+                  Light Version
+                </button>
+                <button className="cv-menu-item" onClick={() => downloadCV('dark')}>
+                  <span className="material-icons-round">dark_mode</span>
+                  Dark Version
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
