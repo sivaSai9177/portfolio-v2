@@ -15,10 +15,15 @@ DEPLOYMENT-PLAN.md
 render.yaml
 *.md
 
-# Dev dependencies
+# Dev dependencies & build output
 node_modules
+dist
 .env
 .env.*
+
+# Old static files (no longer served directly)
+_old_index.html
+_old_showcase.html
 
 # Empty folder
 images/
